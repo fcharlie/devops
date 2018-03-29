@@ -16,6 +16,10 @@ Function Get-WebFile {
         [String]$Path
     )
     Write-Host "Download URL: $Uri"
+    if(Test-Path $Path){
+        Write-Host "Found $Path, use cache"
+        return $true
+    }
     try {
         Invoke-WebRequest -Uri $Uri -OutFile $Path -UserAgent $InternalUA -UseBasicParsing
     }
@@ -63,19 +67,19 @@ Function DevcompileGIT {
     }
     $gitsrcdir = "/tmp/git-$git_version"
 
-    if ((ProcessExec -FilePath "tar" -ArgumentList "-xvf /tmp/git-$git_version.tar.gz" -Dir "/tmp") -ne 0) {
+    if ((ProcessExec -FilePath "tar" -Arguments "-xvf  git-$git_version.tar.gz" -Dir "/tmp") -ne 0) {
         return $false
     }
-    if ((ProcessExec -FilePath "make" -ArgumentList "configure" -Dir $gitsrcdir) -ne 0) {
+    if ((ProcessExec -FilePath "make" -Arguments "configure" -Dir $gitsrcdir) -ne 0) {
         return $false
     }
-    if ((ProcessExec -FilePath "sh" -ArgumentList "-c `"./configure --prefix=/usr/local`"" -Dir $gitsrcdir) -ne 0) {
+    if ((ProcessExec -FilePath "sh" -Arguments "-c `"./configure --prefix=/usr/local`"" -Dir $gitsrcdir) -ne 0) {
         return $false
     }
     if ((ProcessExec -FilePath "make"  -Dir $gitsrcdir) -ne 0) {
         return $false
     }
-    if ((ProcessExec -FilePath "sudo" -ArgumentList "make install" -Dir $gitsrcdir) -ne 0) {
+    if ((ProcessExec -FilePath "sudo" -Arguments "make install" -Dir $gitsrcdir) -ne 0) {
         return $false
     }
     return $true
