@@ -1,0 +1,7 @@
+{
+    "source": "https://storage.googleapis.com/golang",
+    "mirror": "https://studygolang.com/dl/golang",
+    "prefix": "/usr/local",
+    "version": "1.10",
+    "profiled": "/etc/profile.d/golang_path.sh"
+}

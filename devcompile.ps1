@@ -1,8 +1,8 @@
 #!/usr/bin/env pwsh
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Force use TLS 1.2
-Import-Module -Name "${PSScriptRoot}\modules\Download"
-Import-Module -Name "${PSScriptRoot}\modules\Process"
+Import-Module -Name "${PSScriptRoot}/modules/Download"
+Import-Module -Name "${PSScriptRoot}/modules/Process"
 
 $toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "devcompile.lock.json"
 $toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
