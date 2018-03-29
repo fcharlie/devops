@@ -69,7 +69,13 @@ if ($toolslocked.git -ne $git_version) {
         $newlocked["git"] = $git_version
     }
 }
+else {
+    Write-Host -ForegroundColor Green "git: $git_version already installed"
+}
 
 if ($newlocked["git"] -eq $null) {
     $newlocked["git"] = $toolslocked.git
 }
+
+
+ConvertTo-Json $newlocked |Out-File -Force -FilePath $toolslockfile
