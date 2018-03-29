@@ -1,11 +1,23 @@
 #!/usr/bin/env pwsh
 
-$toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "devinstall.lock.json"
-
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Force use TLS 1.2
 $InternalUA = [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome
+$toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "devinstall.lock.json"
+$toolslocked = Get-Content $toolslockfile| ConvertFrom-Json
+$newlocked = @{}
 
-Function DownloadFile {
+### CMAKE VERSION
+$cmake_major = 3
+$cmake_minor = 11
+$cmake_patchver = 2
+$cmake_version = "$cmake_major.$cmake_minor.$cmake_patchver"
+
+### Other version here
+
+
+
+# Download file from web
+Function Get-WebFile {
     param(
         [String]$Uri,
         [String]$Path
@@ -21,17 +33,13 @@ Function DownloadFile {
     return $true
 }
 
-$toolslocked = Get-Content $toolslockfile| ConvertFrom-Json
-$newlocked = @{}
-$cmake_major = 3
-$cmake_minor = 11
-$cmake_patchver = 2
-$cmake_version = "$cmake_major.$cmake_minor.$cmake_patchver"
+
+# Install cmake
 
 if ($toolslocked.cmake -ne $cmake_version) {
     # Download cmake and install.
     $cmakeurl = "https://cmake.org/files/v$cmake_major.$cmake_minor/cmake-$cmake_major.$cmake_minor.$cmake_pathver-Linux-x86_64.sh"
-    if (DownloadFile -Uri $cmakeurl -Path "/tmp/cmake.sh") {
+    if (Get-WebFile -Uri $cmakeurl -Path "/tmp/cmake.sh") {
         chmod +x "/tmp/cmake.sh"
         sudo "/tmp/cmake.sh" --prefix=/usr/local --skip-license
         $newlocked["cmake"] = $cmake_version
@@ -40,5 +48,7 @@ if ($toolslocked.cmake -ne $cmake_version) {
 if ($newlocked["cmake"] -eq $null) {
     $newlocked["cmake"] = $toolslocked.cmake
 }
+
+# Install other...
 
 ConvertTo-Json $newlocked |Out-File -Force -FilePath $toolslockfile
