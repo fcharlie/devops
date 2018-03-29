@@ -15,7 +15,7 @@ Function Test-Command {
 }
 
 
-Function Get-WebFile {
+Function DownloadFile {
     param(
         [String]$Url,
         [String]$Destination,

@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Force use TLS 1.2
-Import-Module -Name "${PSScriptRoot}\modules\WGet"
+Import-Module -Name "${PSScriptRoot}\modules\Download"
 $toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "devinstall.lock.json"
 $toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
 $newlocked = @{}
@@ -20,7 +20,7 @@ $cmake_version = "$cmake_major.$cmake_minor.$cmake_patchver"
 if ($toolslocked.cmake -ne $cmake_version) {
     # Download cmake and install.
     $cmakeurl = "https://cmake.org/files/v$cmake_major.$cmake_minor/cmake-$cmake_major.$cmake_minor.$cmake_patchver-Linux-x86_64.sh"
-    if (Get-WebFile -Url $cmakeurl -Destination "/tmp/cmake.sh") {
+    if (DownloadFile -Url $cmakeurl -Destination "/tmp/cmake.sh") {
         chmod +x "/tmp/cmake.sh"
         sudo "/tmp/cmake.sh" --prefix=/usr/local --skip-license
         $newlocked["cmake"] = $cmake_version

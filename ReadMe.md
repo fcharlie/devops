@@ -7,4 +7,4 @@ support CMake
 
 ## Compile
 
-support Git
+support Git, Boost

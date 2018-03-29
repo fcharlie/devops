@@ -1,38 +1,23 @@
 #!/usr/bin/env pwsh
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Force use TLS 1.2
-Import-Module -Name "${PSScriptRoot}\modules\WGet"
+Import-Module -Name "${PSScriptRoot}\modules\Download"
+Import-Module -Name "${PSScriptRoot}\modules\Process"
+
 $toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "devcompile.lock.json"
 $toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
 $newlocked = @{}
 
+$configfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "config.json"
+$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+
 $git_version = "2.16.3"
+$boost_major = 1
+$boost_minor = 66
+$boost_patchver = 0
+$boost_version = "$boost_major.$boost_minor.$boost_patchver"
+$boost_name = "boost_$boost_major`_$boost_minor`_$boost_patchver"
 
-
-Function ProcessExec {
-    param(
-        [string]$FilePath,
-        [string]$Arguments,
-        [string]$Dir
-    )
-    $ProcessInfo = New-Object System.Diagnostics.ProcessStartInfo 
-    $ProcessInfo.FileName = $FilePath
-    if ($Dir.Length -eq 0) {
-        $ProcessInfo.WorkingDirectory = $PWD
-    }
-    else {
-        $ProcessInfo.WorkingDirectory = $Dir
-    }
-    $ProcessInfo.Arguments = $Arguments
-    $ProcessInfo.UseShellExecute = $false ## use createprocess not shellexecute
-    $Process = New-Object System.Diagnostics.Process 
-    $Process.StartInfo = $ProcessInfo 
-    if ($Process.Start() -eq $false) {
-        return -1
-    }
-    $Process.WaitForExit()
-    return $Process.ExitCode
-}
 #$BaseLocation=Get-Location
 
 # compile git
@@ -41,7 +26,7 @@ Function DevcompileGIT {
         [String]$Version
     )
     $giturl = "https://github.com/git/git/archive/v$git_version.tar.gz"
-    if ((Get-WebFile -Url $giturl -Destination "/tmp/git-$git_version.tar.gz") -eq $false) {
+    if ((DownloadFile -Url $giturl -Destination "/tmp/git-$git_version.tar.gz") -eq $false) {
         return $false
     }
     $gitsrcdir = "/tmp/git-$git_version"
@@ -64,6 +49,39 @@ Function DevcompileGIT {
     return $true
 }
 
+Function DevcompileBoost {
+    param(
+        [String]$Version,
+        [String]$Name,
+        [String]$Devhome,
+        [String]$Prefix,
+        [ValidateSet("static", "shared")]
+        [String]$Linked # only shared or static
+    )
+    $destdir = $Devhome + [System.IO.Path]::DirectorySeparatorChar + $Name
+    $boostfile = $destdir + ".tar.gz"
+    $boosturl = "https://dl.bintray.com/boostorg/release/$Version/source/$Name.tar.gz"
+    if ((DownloadFile -Url $boosturl -Destination $boostfile) -eq $false) {
+        return $false
+    }
+    if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $Name.tar.gz" -Dir $Devhome) -ne 0) {
+        return $false
+    }
+    if ((ProcessExec -FilePath "./bootstrap.sh" -Dir $destdir) -ne 0) {
+        return $false
+    }
+    $b2cmdline = "--prefix=`"$Prefix`""
+    if ($Linked -eq "static") {
+        $b2cmdline += " cxxflags=`"-fPIC`" link=static"
+    }
+    $b2cmdline += " install"
+    if ((ProcessExec -FilePath "./b2" -Arguments $b2cmdline -Dir $destdir) -ne 0) {
+        return $false
+    }
+    return $true
+}
+
+### Try to compile git
 if ($toolslocked.git -ne $git_version) {
     if (DevcompileGIT -Version $git_version) {
         $newlocked["git"] = $git_version
@@ -76,6 +94,38 @@ else {
 if ($newlocked["git"] -eq $null) {
     $newlocked["git"] = $toolslocked.git
 }
+
+### Try to compile boost
+if ($toolslocked.boost -ne $boost_version) {
+    $boost_prefix = "/opt/boost"
+    $devhome = "/tmp"
+    $boost_linked = "static"
+    if ($mconfig.boost.prefix -ne $null) {
+        $boost_prefix = $mconfig.boost.prefix
+    }
+    if ($mconfig.boost.devhome -ne $null) {
+        $devhome = $mconfig.boost.devhome
+    }
+    if ($mconfig.boost.linked -ne $null) {
+        $boost_linked = $mconfig.boost.linked
+    }
+    if (!(Test-Path $devhome)) {
+        New-Item -ItemType Directory -Force $devhome -ErrorAction Stop
+    }
+    $ret = DevcompileBoost -Version $boost_version -Name $boost_name -Prefix $boost_prefix -Devhome $devhome -Linked $boost_linked
+    if ($ret) {
+        $newlocked["boost"] = $boost_version
+    }
+
+}
+else {
+    Write-Host -ForegroundColor Green "boost: $boost_version already installed"
+}
+
+if ($newlocked["boost"] -eq $null) {
+    $newlocked["boost"] = $toolslocked.boost
+}
+
 
 
 ConvertTo-Json $newlocked |Out-File -Force -FilePath $toolslockfile
