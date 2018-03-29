@@ -21,6 +21,10 @@ Function DownloadFile {
         [String]$Destination,
         [Switch]$Force
     )
+    if (Test-Path $Destination) {
+        Write-Host "Found $Destination, use download cache"
+        return $true
+    }
     if (Test-Command "wget") {
         wget "--user-agent=$UA" $Url -O $Destination
         if ($LASTEXITCODE -eq 0) {

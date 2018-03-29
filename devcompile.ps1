@@ -67,7 +67,7 @@ Function DevcompileBoost {
     if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $Name.tar.gz" -Dir $Devhome) -ne 0) {
         return $false
     }
-    if ((ProcessExec -FilePath "./bootstrap.sh" -Dir $destdir) -ne 0) {
+    if ((ProcessExec -FilePath "$destdir/bootstrap.sh" -Dir $destdir) -ne 0) {
         return $false
     }
     $b2cmdline = "--prefix=`"$Prefix`""
@@ -75,7 +75,7 @@ Function DevcompileBoost {
         $b2cmdline += " cxxflags=`"-fPIC`" link=static"
     }
     $b2cmdline += " install"
-    if ((ProcessExec -FilePath "./b2" -Arguments $b2cmdline -Dir $destdir) -ne 0) {
+    if ((ProcessExec -FilePath "$destdir/b2" -Arguments $b2cmdline -Dir $destdir) -ne 0) {
         return $false
     }
     return $true
@@ -112,6 +112,7 @@ if ($toolslocked.boost -ne $boost_version) {
     if (!(Test-Path $devhome)) {
         New-Item -ItemType Directory -Force $devhome -ErrorAction Stop
     }
+    $devhome = (Get-Item -Path $devhome -ErrorAction SilentlyContinue ).FullName
     $ret = DevcompileBoost -Version $boost_version -Name $boost_name -Prefix $boost_prefix -Devhome $devhome -Linked $boost_linked
     if ($ret) {
         $newlocked["boost"] = $boost_version
