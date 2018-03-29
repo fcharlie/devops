@@ -1,10 +1,15 @@
 # My Devops Script
 
-## Install
+## Dependencies
 
-support CMake
+This tool need install PowerShell Core,SEE: [Package Installation Instructions](https://github.com/PowerShell/PowerShell/blob/master/docs/installation/linux.md).
+
+## Devinstall
+
+CMake
 
 
-## Compile
+## Devcompile
 
-support Git, Boost
+Git, Boost
+
