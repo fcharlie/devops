@@ -1,10 +1,6 @@
 #!/usr/bin/env pwsh
 
 $toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "devinstall.lock.json"
-if (!(Test-Path $toolsfile)) {
-    Write-Host -ForegroundColor Red "Not Found $toolsfile"
-    Exit 1
-}
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Force use TLS 1.2
 $InternalUA = [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome
