@@ -26,7 +26,7 @@ Function Get-WebFile {
         if ($LASTEXITCODE -eq 0) {
             return $true
         }
-        Remove-Item -Force $Destination |Out-Null ### When wget download failed, remove self
+        Remove-Item -Force $Destination -ErrorAction SilentlyContinue|Out-Null ### When wget download failed, remove self
         return $false
     }
     try {
