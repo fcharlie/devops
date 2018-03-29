@@ -6,7 +6,7 @@ $toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "dev
 $toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
 $newlocked = @{}
 
-$git_version = "2.16.2"
+$git_version = "2.16.3"
 
 
 # Download file from web
@@ -26,16 +26,67 @@ Function Get-WebFile {
     return $true
 }
 
+Function ProcessExec {
+    param(
+        [string]$FilePath,
+        [string]$Arguments,
+        [string]$Dir
+    )
+    $ProcessInfo = New-Object System.Diagnostics.ProcessStartInfo 
+    $ProcessInfo.FileName = $FilePath
+    if ($Dir.Length -eq 0) {
+        $ProcessInfo.WorkingDirectory = $PWD
+    }
+    else {
+        $ProcessInfo.WorkingDirectory = $Dir
+    }
+    $ProcessInfo.Arguments = $Arguments
+    $ProcessInfo.UseShellExecute = $false ## use createprocess not shellexecute
+    $Process = New-Object System.Diagnostics.Process 
+    $Process.StartInfo = $ProcessInfo 
+    if ($Process.Start() -eq $false) {
+        return -1
+    }
+    $Process.WaitForExit()
+    return $Process.ExitCode
+}
 #$BaseLocation=Get-Location
 
-## compile git
-if ($toolslocked.git -ne $git_version) {
-    # Download cmake and install.
+# compile git
+Function DevcompileGIT {
+    param(
+        [String]$Version
+    )
     $giturl = "https://github.com/git/git/archive/v$git_version.tar.gz"
-    if (Get-WebFile -Uri $giturl -Path "/tmp/git-$git_version.tar.gz") {
-        $tarproc = Start-Process -FilePath "tar" -ArgumentList "-xvf /tmp/git-$git_version.tar.gz" -WorkingDirectory "/tmp" -NoNewWindow -Wait -PassThru
+    if ((Get-WebFile -Uri $giturl -Path "/tmp/git-$git_version.tar.gz") -eq $false) {
+        return $false
+    }
+    $gitsrcdir = "/tmp/git-$git_version"
+
+    if ((ProcessExec -FilePath "tar" -ArgumentList "-xvf /tmp/git-$git_version.tar.gz" -Dir "/tmp") -ne 0) {
+        return $false
+    }
+    if ((ProcessExec -FilePath "make" -ArgumentList "configure" -Dir $gitsrcdir) -ne 0) {
+        return $false
+    }
+    if ((ProcessExec -FilePath "sh" -ArgumentList "-c `"./configure --prefix=/usr/local`"" -Dir $gitsrcdir) -ne 0) {
+        return $false
+    }
+    if ((ProcessExec -FilePath "make"  -Dir $gitsrcdir) -ne 0) {
+        return $false
+    }
+    if ((ProcessExec -FilePath "sudo" -ArgumentList "make install" -Dir $gitsrcdir) -ne 0) {
+        return $false
+    }
+    return $true
+}
+
+if ($toolslocked.git -ne $git_version) {
+    if (DevcompileGIT -Version $git_version) {
+        $newlocked["git"] = $git_version
     }
 }
+
 if ($newlocked["git"] -eq $null) {
     $newlocked["git"] = $toolslocked.git
 }
