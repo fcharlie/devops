@@ -14,6 +14,7 @@ $configfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "config
 $mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
+    Write-Host "golang $($toolslocked.version) already install"
     exit 0
 }
 
@@ -36,9 +37,11 @@ if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $gofilename.tar.gz" -Dir "/tm
 }
 
 if (Test-Path -Path $prefix) {
+    Write-Host "move old go to /tmp"
     sudo mv $prefix "/tmp/go.back" -f
 }
 
+Write-Host "install golang to $prefix"
 sudo mv "/tmp/go" $prefix -f
 
 if ($LASTEXITCODE -ne 0) {
@@ -47,6 +50,7 @@ if ($LASTEXITCODE -ne 0) {
 
 "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by golang_profile.sh`nexport PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"|Out-File "/tmp/golang_profile.sh"
 
+Write-Host "add $prefix/bin to `$PATH"
 sudo mv "/tmp/golang_profile.sh" "/etc/profile.d" -f
 
 $obj = @{}
