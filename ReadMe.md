@@ -16,6 +16,7 @@ Usage: devops cmd args
        list        list installed tools/libs
        search      search ported tools/libs
        install     install tools or libs
+       upgrade     upgrade tools/libs
        version     print devops version and exit
        config      config your secure repository
        help        print help message
