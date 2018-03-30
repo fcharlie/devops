@@ -44,7 +44,7 @@ if (Test-Path -Path $prefix) {
 }
 
 Write-Host -ForegroundColor Green "install nodejs to $prefix"
-$requiredsudo = $prefix.StartWith("/usr/")
+$requiredsudo = $prefix.StartsWith("/usr/")
 
 if ($requiredsudo) {
     sudo mv "/tmp/$nodejsfile" $prefix 

@@ -43,7 +43,7 @@ if (Test-Path -Path $prefix) {
 
 Write-Host -ForegroundColor Green "install golang to $prefix"
 
-$requiredsudo = $prefix.StartWith("/usr/")
+$requiredsudo = $prefix.StartsWith("/usr/")
 
 if ($requiredsudo) {
     sudo mv "/tmp/go" $prefix 
