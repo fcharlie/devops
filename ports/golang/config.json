@@ -1,5 +1,5 @@
 {
-    "desc":"The Go Programming Language",
+    "description": "The Go Programming Language",
     "sources": [
         "https://storage.googleapis.com/golang",
         "https://studygolang.com/dl/golang"

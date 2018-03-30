@@ -1,5 +1,5 @@
 {
-    "desc": "Boost provides free peer-reviewed portable C++ source libraries.",
+    "description": "Boost provides free peer-reviewed portable C++ source libraries.",
     "sources": "https://dl.bintray.com/boostorg/release",
     "prefix": "/opt/boost",
     "linked": "static",

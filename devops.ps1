@@ -12,7 +12,7 @@ Function DevopsList {
     Get-ChildItem -Path "$Devroot/ports" |ForEach-Object {
         $cj = Get-Content "$($_.FullName)/config.json" |ConvertFrom-Json
         $version = $cj.version
-        Write-Host "$($_.BaseName)`t$version`t$($cj.desc)"
+        Write-Host "$($_.BaseName)`t$version`t$($cj.description)"
     }
 }
 

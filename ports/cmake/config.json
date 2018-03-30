@@ -1,6 +1,6 @@
 {
-    "desc": "CMake is an open-source, cross-platform family of tools designed to build, test and package software",
+    "description": "CMake is an open-source, cross-platform family of tools designed to build, test and package software",
     "sources": "https://cmake.org/files",
-    "prefix":"/opt/cmake",
+    "prefix": "/opt/cmake",
     "version": "3.11.0"
 }
