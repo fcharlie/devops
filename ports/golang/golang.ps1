@@ -64,7 +64,7 @@ export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"
 else {
     "export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"|Out-File "/tmp/golang_profile.sh"
 }
-
+chmod +x "/tmp/golang_profile.sh"
 Write-Host "add $prefix/bin to `$PATH"
 sudo mv "/tmp/golang_profile.sh" "/etc/profile.d" -f
 

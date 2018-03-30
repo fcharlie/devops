@@ -59,6 +59,7 @@ if ($LASTEXITCODE -ne 0) {
 if ($prefix -ne "/usr/local" -and $prefix -ne "/usr") {
     "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by nodejs_profile.sh"|Out-File "/tmp/nodejs_profile.sh"
     Write-Host "add $prefix/bin to `$PATH"
+    chmod +x "/tmp/nodejs_profile.sh"
     sudo mv "/tmp/nodejs_profile.sh" "/etc/profile.d" -f
 }
 

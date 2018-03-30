@@ -33,6 +33,7 @@ chmod +x "/tmp/$filename"
 if ($prefix -ne "/usr/local" -and $prefix -ne "/usr") {
     &"/tmp/$filename" "--prefix=$prefix" --skip-license
     "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by cmake_profile.sh"|Out-File "/tmp/cmake_profile.sh"
+    chmod +x "/tmp/cmake_profile.sh"
     sudo mv "/tmp/cmake_profile.sh" "/etc/profile.d" -f
 }
 else {
