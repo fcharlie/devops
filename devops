@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+hash pwsh 2>/dev/null || { echo >&2 "I require powershell but it's not installed. "; exit 1; }
+
+ResolveFile=$(readlink $0)
+if [[ "$ResolveFile" == "" ]]; then
+  #statements
+  PrefixDir=$(cd `dirname $0`; pwd)
+else
+  PrefixDir=$(cd `dirname $ResolveFile`; pwd)
+fi
+
+pwsh -NoLogo -NoProfile -File "$PrefixDir/devops.ps1" "$@"
