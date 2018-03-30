@@ -5,12 +5,9 @@ Import-Module -Name "$Toolsdir/modules/Download"
 Import-Module -Name "$Toolsdir/modules/Process"
 Import-Module -Name "$Toolsdir/modules/Utils"
 
-
-
-$toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "config.lock.json"
+$toolslockfile = $Toolsdir + "/locks/golang.lock.json"
+$configfile = $PSScriptRoot + "/config.json"
 $toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
-
-$configfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "config.json"
 $mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
@@ -29,26 +26,34 @@ $gofilename = "go${version}.linux-amd64";
 $gourl = "$besturl/$gofilename.tar.gz"
 
 if ((DownloadFile -Url $gourl -Destination "/tmp/$gofilename.tar.gz") -eq $false) {
+    Write-Host -ForegroundColor Red "download $gourl failed"
     exit 1
 }
 
 if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $gofilename.tar.gz" -Dir "/tmp") -ne 0) {
+    Write-Host -ForegroundColor Red "untar /tmp/$gofilename.tar.gz failed"
     exit 1
 }
 
 if (Test-Path -Path $prefix) {
-    Write-Host "move old go to /tmp"
-    sudo mv $prefix "/tmp/go.back" -f
+    sudo rm "/tmp/go.back" -rf
+    Write-Host -ForegroundColor Yellow "move old go to /tmp"
+    sudo mv $prefix "/tmp/go.back" 
 }
 
-Write-Host "install golang to $prefix"
-sudo mv "/tmp/go" $prefix -f
+Write-Host -ForegroundColor Green "install golang to $prefix"
+sudo mv "/tmp/go" $prefix 
 
 if ($LASTEXITCODE -ne 0) {
     exit 1
 }
-
-"export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by golang_profile.sh`nexport PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"|Out-File "/tmp/golang_profile.sh"
+if ($prefix -ne "/usr/local" -and $prefix -ne "/usr") {
+    "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by golang_profile.sh
+export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"|Out-File "/tmp/golang_profile.sh"
+}
+else {
+    "export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"|Out-File "/tmp/golang_profile.sh"
+}
 
 Write-Host "add $prefix/bin to `$PATH"
 sudo mv "/tmp/golang_profile.sh" "/etc/profile.d" -f

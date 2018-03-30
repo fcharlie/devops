@@ -4,12 +4,11 @@
 Import-Module -Name "${PSScriptRoot}/modules/Download"
 Import-Module -Name "${PSScriptRoot}/modules/Process"
 
-$toolslockfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "devcompile.lock.json"
+$toolslockfile = $PSScriptRoot + "/locks/devcompile.lock.json"
+$configfile = $PSScriptRoot + "/config.json"
 $toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
-$newlocked = @{}
-
-$configfile = $PSScriptRoot + [System.IO.Path]::DirectorySeparatorChar + "config.json"
 $mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$newlocked = @{}
 
 $git_version = "2.16.3"
 $boost_major = 1
