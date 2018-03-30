@@ -1,7 +1,0 @@
-{
-    "boost": {
-        "devhome": "~/devhome",
-        "prefix": "/opt/boost",
-        "linked": "static"
-    }
-}
