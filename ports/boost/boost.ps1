@@ -29,7 +29,7 @@ if ((DownloadFile -Url $boosturl -Destination "/tmp/$filename.tar.gz") -eq $fals
     exit 1
 }
 $destdir = "/tmp/$filename"
-if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $filenmae.tar.gz" -Dir "/tmp") -ne 0) {
+if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $filename.tar.gz" -Dir "/tmp") -ne 0) {
     Write-Host -ForegroundColor Red "untar /tmp/$filename.tar.gz failed"
     exit 1
 }
