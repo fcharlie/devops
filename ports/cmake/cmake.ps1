@@ -12,7 +12,7 @@ $configfile = $PSScriptRoot + "/config.json"
 $mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
-    Write-Host "cmake $($toolslocked.version) already install, if not install, please remove config.lock.json"
+    Write-Host "cmake $($toolslocked.version) already install, if not install, please remove cmake.lock.json"
     exit 0
 }
 
@@ -33,6 +33,7 @@ chmod +x "/tmp/$filename"
 if ($prefix -ne "/usr/local" -and $prefix -ne "/usr") {
     &"/tmp/$filename" "--prefix=$prefix" --skip-license
     "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by cmake_profile.sh"|Out-File "/tmp/cmake_profile.sh"
+    sudo mv "/tmp/cmake_profile.sh" "/etc/profile.d" -f
 }
 else {
     sudo "/tmp/$filename" "--prefix=$prefix" --skip-license

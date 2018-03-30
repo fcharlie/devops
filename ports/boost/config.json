@@ -1,0 +1,6 @@
+{
+    "desc": "Boost provides free peer-reviewed portable C++ source libraries.",
+    "sources": "https://dl.bintray.com/boostorg/release",
+    "prefix": "/opt/boost",
+    "version": "1.66.0"
+}

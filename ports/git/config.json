@@ -1,0 +1,6 @@
+{
+    "desc": "Distributed Version Control System",
+    "sources": "https://github.com/git/git/archive",
+    "prefix": "/usr/local",
+    "version": "2.16.3"
+}
