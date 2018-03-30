@@ -47,8 +47,9 @@ Function Test-BestSourcesURL {
     param(
         [String[]]$Urls
     )
-    if ($Urls.Count -eq 0) {
+    if ($Urls.Count -eq 0 -or $Urls -eq $null) {
         Write-Host -ForegroundColor Red "Test-BestWebConnection input urls empty"
+        return $null
     }
     [System.String]$besturl = $null;
     [System.Double]$pretime = [System.Double]::MaxValue
