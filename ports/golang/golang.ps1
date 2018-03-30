@@ -42,11 +42,21 @@ if (Test-Path -Path $prefix) {
 }
 
 Write-Host -ForegroundColor Green "install golang to $prefix"
-sudo mv "/tmp/go" $prefix 
+
+$requiredsudo = $prefix.StartWith("/usr/")
+
+if ($requiredsudo) {
+    sudo mv "/tmp/go" $prefix 
+}
+else {
+    mv "/tmp/go" $prefix 
+}
 
 if ($LASTEXITCODE -ne 0) {
     exit 1
 }
+
+
 if ($prefix -ne "/usr/local" -and $prefix -ne "/usr") {
     "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by golang_profile.sh
 export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"|Out-File "/tmp/golang_profile.sh"
