@@ -13,7 +13,7 @@ $configfile = $PSScriptRoot + "/config.json"
 $mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
-    Write-Host "cmake $($toolslocked.version) already install, if not install, please remove git.lock.json"
+    Write-Host "git $($toolslocked.version) already install, if not install, please remove git.lock.json"
     exit 0
 }
 
