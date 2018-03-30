@@ -22,6 +22,10 @@ Usage: devops cmd args
 
 ```
 
+## Snapshot
+
+![snapshot_20180330](./docs/images/snapshot_20180330.png)
+
 ## Copyright
 
 Licensed under MIT
