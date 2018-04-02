@@ -27,7 +27,7 @@ $nodejsfile = "node-v$version-linux-x64"
 $nodejsurl = "$besturl/v$version/$nodejsfile.tar.xz"
 
 if ((DownloadFile -Url $nodejsurl -Destination "/tmp/$nodejsfile.tar.gz") -eq $false) {
-    Write-Host -ForegroundColor Red "download $gourl failed"
+    Write-Host -ForegroundColor Red "download $nodejsurl failed"
     exit 1
 }
 

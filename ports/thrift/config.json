@@ -1,0 +1,9 @@
+{
+    "description": "Apache Thrift",
+    "sources": [
+        "http://mirrors.tuna.tsinghua.edu.cn/apache/thrift",
+        "http://www-eu.apache.org/dist/thrift"
+    ],
+    "prefix": "/opt/thrift",
+    "version": "0.11.0"
+}
