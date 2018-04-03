@@ -42,7 +42,7 @@ $dir = Get-Location
 Set-Location "/tmp/$thriftfile"
 mkdir "out"
 Set-Location "out"
-cmake "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$prefix" ..
+cmake "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$prefix" "-DWITH_BOOST_STATIC=ON" ..
 if ($LASTEXITCODE -ne 0) {
     Set-Location $dir
     exit 1
