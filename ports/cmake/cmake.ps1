@@ -18,28 +18,39 @@ if ($toolslocked.version -eq $mconfig.version) {
 
 $version = $mconfig.version
 $va = $version.Split(".")
-#https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.sh
-$filename = "cmake-$version-Linux-x86_64.sh"
-$cmakeurl = "$($mconfig.sources)/v$($va[0]).$($va[1])/$filename"
+#https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.tar.gz
+$filename = "cmake-$version-Linux-x86_64"
+$cmakeurl = "$($mconfig.sources)/v$($va[0]).$($va[1])/$filename.tar.gz"
 
-if ((DownloadFile -Url $cmakeurl -Destination "/tmp/$filename") -eq $false) {
+if ((DownloadFile -Url $cmakeurl -Destination "/tmp/$filename.tar.gz") -eq $false) {
     Write-Host -ForegroundColor Red "download $cmakeurl failed"
     exit 1
 }
-# cmake_profile.sh
-chmod +x "/tmp/$filename"
 
-
-if ($prefix -ne "/usr/local" -and $prefix -ne "/usr") {
-    &"/tmp/$filename" "--prefix=$prefix" --skip-license
-    "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by cmake_profile.sh"|Out-File "/tmp/cmake_profile.sh"
-    chmod +x "/tmp/cmake_profile.sh"
-    sudo mv "/tmp/cmake_profile.sh" "/etc/profile.d" -f
-}
-else {
-    sudo "/tmp/$filename" "--prefix=$prefix" --skip-license
+$prefix = $mconfig.prefix
+$destdir = "/tmp/$filename"
+if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $filename.tar.gz" -Dir "/tmp") -ne 0) {
+    Write-Host -ForegroundColor Red "untar /tmp/$filename.tar.gz failed"
+    exit 1
 }
 
+try {
+    Move-Item -Force -Path $destdir -Destination $prefix
+}
+catch {
+    Write-Host -ForegroundColor Red "move item failed: $_"
+    exit 1
+}
+
+$lnfiles = "cmake", "cmake-gui", "cpack", "ccmake", "ctest"
+
+foreach ($f in $lnfiles) {
+    $xpath = "/usr/local/bin/$f"
+    if (Test-Path $xpath) {
+        sudo rm $xpath
+    }
+    sudo ln -s "$prefix/bin/$f" $xpath
+}
 
 $obj = @{}
 $obj["version"] = $version
