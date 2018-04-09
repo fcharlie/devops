@@ -2,13 +2,6 @@
 
 hash pwsh 2>/dev/null || { echo >&2 "I require powershell but it's not installed. "; exit 1; }
 
-ResolveFile=$(readlink "$0")
-
-if [[ "$ResolveFile" == "" ]]; then
-  InstallDir=$(dirname "$0")
-else
-  InstallDir=$(dirname "$ResolveFile")
-fi
-
-PrefixDir=$(realpath "$InstallDir")
+Xrealfile=$(realpath "$0")
+PrefixDir=$(dirname "$Xrealfile")
 pwsh -NoLogo -NoProfile -File "$PrefixDir/devops.ps1" "$@"
