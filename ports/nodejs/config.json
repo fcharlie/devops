@@ -5,5 +5,5 @@
         "https://npm.taobao.org/mirrors/node"
     ],
     "prefix": "/usr/local/nodejs",
-    "version": "9.11.1"
+    "version": "10.0.0"
 }
