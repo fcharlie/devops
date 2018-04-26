@@ -35,6 +35,10 @@ if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $filename.tar.gz" -Dir "/tmp"
 }
 
 try {
+    Write-Host -ForegroundColor Green "install to $prefix"
+    if ((Test-Path $prefix)) {
+        Remove-Item -Fo  -Recurse $prefix
+    }
     Move-Item -Force -Path $destdir -Destination $prefix
 }
 catch {
