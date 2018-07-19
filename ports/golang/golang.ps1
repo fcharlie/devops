@@ -16,7 +16,7 @@ if ($toolslocked.version -eq $mconfig.version) {
 }
 
 $besturl = Test-BestSourcesURL -Urls $mconfig.sources
-if ($besturl -eq $null) {
+if ($null -eq $besturl) {
     Write-Host -ForegroundColor Red "Bad sources config, please set it."
     exit 1
 }
@@ -38,7 +38,7 @@ if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $gofilename.tar.gz" -Dir "/tm
 if (Test-Path -Path $prefix) {
     sudo rm "/tmp/go.back" -rf
     Write-Host -ForegroundColor Yellow "move old go to /tmp"
-    sudo mv $prefix "/tmp/go.back" 
+    sudo mv $prefix "/tmp/go.back"
 }
 
 Write-Host -ForegroundColor Green "install golang to $prefix"
@@ -46,10 +46,10 @@ Write-Host -ForegroundColor Green "install golang to $prefix"
 $requiredsudo = $prefix.StartsWith("/usr/")
 
 if ($requiredsudo) {
-    sudo mv "/tmp/go" $prefix 
+    sudo mv "/tmp/go" $prefix
 }
 else {
-    mv "/tmp/go" $prefix 
+    mv "/tmp/go" $prefix
 }
 
 if ($LASTEXITCODE -ne 0) {

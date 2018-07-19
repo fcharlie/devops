@@ -2,7 +2,7 @@
 ## devops.ps1 list
 ## devops.ps1 version
 ## devops.ps1 install golang
-## devops.ps1 
+## devops.ps1
 
 Function PrintUsage {
     Write-Host "Devops utilies 1.0

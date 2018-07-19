@@ -20,7 +20,7 @@ if ($toolslocked.version -eq $mconfig.version) {
 }
 
 $besturl = Test-BestSourcesURL -Urls $mconfig.sources
-if ($besturl -eq $null) {
+if ($null -eq $besturl) {
     Write-Host -ForegroundColor Red "Bad sources config, please set it."
     exit 1
 }
@@ -38,7 +38,7 @@ if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $thriftfile.tar.gz" -Dir "/tm
     Write-Host -ForegroundColor Red "untar /tmp/$thriftfile.tar.gz failed"
     exit 1
 }
-$dir = Get-Location 
+$dir = Get-Location
 Set-Location "/tmp/$thriftfile"
 mkdir "out"
 Set-Location "out"

@@ -17,7 +17,7 @@ if ($toolslocked.version -eq $mconfig.version) {
 }
 
 $besturl = Test-BestSourcesURL -Urls $mconfig.sources
-if ($besturl -eq $null) {
+if ($null -eq $besturl) {
     Write-Host -ForegroundColor Red "Bad sources config, please set it."
     exit 1
 }
@@ -40,17 +40,17 @@ if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $nodejsfile.tar.gz" -Dir "/tm
 if (Test-Path -Path $prefix) {
     sudo rm "/tmp/nodejs.back" -rf
     Write-Host -ForegroundColor Yellow "move old nodejs to /tmp"
-    sudo mv $prefix "/tmp/nodejs.back" 
+    sudo mv $prefix "/tmp/nodejs.back"
 }
 
 Write-Host -ForegroundColor Green "install nodejs to $prefix"
 $requiredsudo = $prefix.StartsWith("/usr/")
 
 if ($requiredsudo) {
-    sudo mv "/tmp/$nodejsfile" $prefix 
+    sudo mv "/tmp/$nodejsfile" $prefix
 }
 else {
-    mv "/tmp/$nodejsfile" $prefix 
+    mv "/tmp/$nodejsfile" $prefix
 }
 
 if ($LASTEXITCODE -ne 0) {
