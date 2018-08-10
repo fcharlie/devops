@@ -22,15 +22,15 @@ $va = $version.Split(".")
 $prefix = $mconfig.prefix
 $linked=$mconfig.linked
 $filename = "boost_$($va[0])_$($va[1])_$($va[2])"
-$boosturl = "$($mconfig.sources)/$version/source/$filename.tar.gz"
+$boosturl = "$($mconfig.sources)/$version/source/$filename.tar.bz2"
 
-if ((DownloadFile -Url $boosturl -Destination "/tmp/$filename.tar.gz") -eq $false) {
+if ((DownloadFile -Url $boosturl -Destination "/tmp/$filename.tar.bz2") -eq $false) {
     Write-Host -ForegroundColor Red "download git $boosturl failed"
     exit 1
 }
 $destdir = "/tmp/$filename"
-if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $filename.tar.gz" -Dir "/tmp") -ne 0) {
-    Write-Host -ForegroundColor Red "untar /tmp/$filename.tar.gz failed"
+if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $filename.tar.bz2" -Dir "/tmp") -ne 0) {
+    Write-Host -ForegroundColor Red "untar /tmp/$filename.tar.bz2 failed"
     exit 1
 }
 if ((ProcessExec -FilePath "$destdir/bootstrap.sh" -Dir $destdir) -ne 0) {
