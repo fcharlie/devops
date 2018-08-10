@@ -3,5 +3,5 @@
     "sources": "https://dl.bintray.com/boostorg/release",
     "prefix": "/opt/boost",
     "linked": "static",
-    "version": "1.67.0"
+    "version": "1.68.0"
 }
