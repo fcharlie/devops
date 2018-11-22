@@ -17,10 +17,9 @@ if ($toolslocked.version -eq $mconfig.version) {
 }
 
 $version = $mconfig.version
-$va = $version.Split(".")
-#https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.tar.gz
+#https://github.com/Kitware/CMake/releases/download/v3.13.0/cmake-3.13.0-Linux-x86_64.tar.gz
 $filename = "cmake-$version-Linux-x86_64"
-$cmakeurl = "$($mconfig.sources)/v$($va[0]).$($va[1])/$filename.tar.gz"
+$cmakeurl = "$($mconfig.sources)/v$version/$filename.tar.gz"
 
 if ((DownloadFile -Url $cmakeurl -Destination "/tmp/$filename.tar.gz") -eq $false) {
     Write-Host -ForegroundColor Red "download $cmakeurl failed"
