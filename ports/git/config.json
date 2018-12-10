@@ -2,5 +2,5 @@
     "description": "Git is a modern distributed version control system focused on speed",
     "sources": "https://github.com/git/git/archive",
     "prefix": "/usr/local",
-    "version": "2.19.2"
+    "version": "2.20.0"
 }
