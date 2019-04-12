@@ -8,9 +8,9 @@ Import-Module -Name "$Toolsdir/modules/Process"
 Import-Module -Name "$Toolsdir/modules/Utils"
 
 $toolslockfile = $Toolsdir + "/locks/boost.lock.json"
-$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 $configfile = $PSScriptRoot + "/config.json"
-$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
     Write-Host "boost $($toolslocked.version) already install, if not install, please remove boost.lock.json"
@@ -20,7 +20,7 @@ if ($toolslocked.version -eq $mconfig.version) {
 $version = $mconfig.version
 $va = $version.Split(".")
 $prefix = $mconfig.prefix
-$linked=$mconfig.linked
+$linked = $mconfig.linked
 $filename = "boost_$($va[0])_$($va[1])_$($va[2])"
 $boosturl = "$($mconfig.sources)/$version/source/$filename.tar.bz2"
 
@@ -47,8 +47,8 @@ if ((ProcessExec -FilePath "$destdir/b2" -Arguments $b2cmdline -Dir $destdir) -n
     exit 1
 }
 
-$obj = @{}
+$obj = @{ }
 $obj["version"] = $version
 $obj["prefix"] = $prefix
 
-ConvertTo-Json $obj |Out-File -Force -FilePath $toolslockfile
+ConvertTo-Json $obj | Out-File -Force -FilePath $toolslockfile

@@ -8,8 +8,8 @@ Import-Module -Name "$Toolsdir/modules/Utils"
 
 $toolslockfile = $Toolsdir + "/locks/nodejs.lock.json"
 $configfile = $PSScriptRoot + "/config.json"
-$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
-$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue | ConvertFrom-Json
+$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
     Write-Host "nodejs $($toolslocked.version) already install"
@@ -57,14 +57,14 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 if ($prefix -ne "/usr/local" -and $prefix -ne "/usr") {
-    "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by nodejs_profile.sh"|Out-File "/tmp/nodejs_profile.sh"
+    "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by nodejs_profile.sh" | Out-File "/tmp/nodejs_profile.sh"
     Write-Host "add $prefix/bin to `$PATH"
     chmod +x "/tmp/nodejs_profile.sh"
     sudo mv "/tmp/nodejs_profile.sh" "/etc/profile.d" -f
 }
 
-$obj = @{}
+$obj = @{ }
 $obj["version"] = $version
 $obj["prefix"] = $prefix
 
-ConvertTo-Json $obj |Out-File -Force -FilePath $toolslockfile
+ConvertTo-Json $obj | Out-File -Force -FilePath $toolslockfile

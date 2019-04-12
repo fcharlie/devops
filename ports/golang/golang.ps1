@@ -7,8 +7,8 @@ Import-Module -Name "$Toolsdir/modules/Utils"
 
 $toolslockfile = $Toolsdir + "/locks/golang.lock.json"
 $configfile = $PSScriptRoot + "/config.json"
-$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
-$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue | ConvertFrom-Json
+$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
     Write-Host "golang $($toolslocked.version) already install"
@@ -59,17 +59,17 @@ if ($LASTEXITCODE -ne 0) {
 
 if ($prefix -ne "/usr/local" -and $prefix -ne "/usr") {
     "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by golang_profile.sh
-export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"|Out-File "/tmp/golang_profile.sh"
+export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh" | Out-File "/tmp/golang_profile.sh"
 }
 else {
-    "export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh"|Out-File "/tmp/golang_profile.sh"
+    "export PATH=`$PATH:$HOME/go/bin ;# DOT NOT EDIT: installed by golang_profile.sh" | Out-File "/tmp/golang_profile.sh"
 }
 chmod +x "/tmp/golang_profile.sh"
 Write-Host "add $prefix/bin to `$PATH"
 sudo mv "/tmp/golang_profile.sh" "/etc/profile.d" -f
 
-$obj = @{}
+$obj = @{ }
 $obj["version"] = $version
 $obj["prefix"] = $prefix
 
-ConvertTo-Json $obj |Out-File -Force -FilePath $toolslockfile
+ConvertTo-Json $obj | Out-File -Force -FilePath $toolslockfile

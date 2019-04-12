@@ -7,7 +7,7 @@ Function Test-Command {
         [String]$ExeName
     )
     $myErr = @()
-    Get-command -CommandType Application $ExeName -ErrorAction SilentlyContinue -ErrorVariable +myErr
+    Get-Command -CommandType Application $ExeName -ErrorAction SilentlyContinue -ErrorVariable +myErr
     if ($myErr.count -eq 0) {
         return $True
     }
@@ -30,7 +30,7 @@ Function DownloadFile {
         if ($LASTEXITCODE -eq 0) {
             return $true
         }
-        Remove-Item -Force $Destination -ErrorAction SilentlyContinue|Out-Null ### When wget download failed, remove self
+        Remove-Item -Force $Destination -ErrorAction SilentlyContinue | Out-Null ### When wget download failed, remove self
         return $false
     }
     try {

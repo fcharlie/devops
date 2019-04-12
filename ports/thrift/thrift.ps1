@@ -11,8 +11,8 @@ Import-Module -Name "$Toolsdir/modules/Utils"
 
 $toolslockfile = $Toolsdir + "/locks/thrift.lock.json"
 $configfile = $PSScriptRoot + "/config.json"
-$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
-$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue | ConvertFrom-Json
+$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
     Write-Host "thrift $($toolslocked.version) already install"
@@ -62,9 +62,9 @@ else {
 
 Set-Location $dir
 
-$obj = @{}
+$obj = @{ }
 $obj["version"] = $version
 $obj["prefix"] = $prefix
 
-ConvertTo-Json $obj |Out-File -Force -FilePath $toolslockfile
+ConvertTo-Json $obj | Out-File -Force -FilePath $toolslockfile
 

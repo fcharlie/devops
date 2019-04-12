@@ -7,9 +7,9 @@ Import-Module -Name "$Toolsdir/modules/Process"
 Import-Module -Name "$Toolsdir/modules/Utils"
 
 $toolslockfile = $Toolsdir + "/locks/cmake.lock.json"
-$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 $configfile = $PSScriptRoot + "/config.json"
-$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
     Write-Host "cmake $($toolslocked.version) already install, if not install, please remove cmake.lock.json"
@@ -55,8 +55,8 @@ foreach ($f in $lnfiles) {
     sudo ln -s "$prefix/bin/$f" $xpath
 }
 
-$obj = @{}
+$obj = @{ }
 $obj["version"] = $version
 $obj["prefix"] = $prefix
 
-ConvertTo-Json $obj |Out-File -Force -FilePath $toolslockfile
+ConvertTo-Json $obj | Out-File -Force -FilePath $toolslockfile

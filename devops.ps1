@@ -27,8 +27,8 @@ Function DevopsList {
         return
     }
     Write-Host -ForegroundColor Green "devops tools, found installed tools:"
-    Get-ChildItem -Path "$Devroot/locks/*.lock.json" |ForEach-Object {
-        $cj = Get-Content $_.FullName |ConvertFrom-Json
+    Get-ChildItem -Path "$Devroot/locks/*.lock.json" | ForEach-Object {
+        $cj = Get-Content $_.FullName | ConvertFrom-Json
         $version = $cj.version
         $name = $_.BaseName.Split(".lock")[0]
         Write-Host "$name`t$version`t$($cj.prefix)"
@@ -41,8 +41,8 @@ Function DevopsSearch {
         [String]$Devroot
     )
     Write-Host -ForegroundColor Green "devops tools, found ports:"
-    Get-ChildItem -Path "$Devroot/ports" |ForEach-Object {
-        $cj = Get-Content "$($_.FullName)/config.json" |ConvertFrom-Json
+    Get-ChildItem -Path "$Devroot/ports" | ForEach-Object {
+        $cj = Get-Content "$($_.FullName)/config.json" | ConvertFrom-Json
         $version = $cj.version
         Write-Host "$($_.BaseName)`t$version`t$($cj.description)"
     }

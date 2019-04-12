@@ -8,9 +8,9 @@ Import-Module -Name "$Toolsdir/modules/Process"
 Import-Module -Name "$Toolsdir/modules/Utils"
 
 $toolslockfile = $Toolsdir + "/locks/git.lock.json"
-$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 $configfile = $PSScriptRoot + "/config.json"
-$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue| ConvertFrom-Json
+$mconfig = Get-Content $configfile -ErrorAction SilentlyContinue | ConvertFrom-Json
 
 if ($toolslocked.version -eq $mconfig.version) {
     Write-Host "git $($toolslocked.version) already install, if not install, please remove git.lock.json"
@@ -48,7 +48,7 @@ if ("/usr/local" -eq $prefix -or "/usr" -eq $prefix) {
 }
 else {
     make -C $gitsrcdir install
-    "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by git_profile.sh"|Out-File "/tmp/git_profile.sh"
+    "export PATH=`$PATH:$prefix/bin ;# DOT NOT EDIT: installed by git_profile.sh" | Out-File "/tmp/git_profile.sh"
     sudo mv "/tmp/git_profile.sh" "/etc/profile.d" -f
 }
 
@@ -57,8 +57,8 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-$obj = @{}
+$obj = @{ }
 $obj["version"] = $version
 $obj["prefix"] = $prefix
 
-ConvertTo-Json $obj |Out-File -Force -FilePath $toolslockfile
+ConvertTo-Json $obj | Out-File -Force -FilePath $toolslockfile

@@ -18,7 +18,7 @@ function TestTcpConnection {
             $tcpclient.Close()
         }
         else {
-            $tcpclient.EndConnect($tcpConnection) | out-Null
+            $tcpclient.EndConnect($tcpConnection) | Out-Null
             $tcpclient.Close()
         }
         return $ResponseTime
@@ -47,11 +47,10 @@ Function Test-BestSourcesURL {
     param(
         [String[]]$Urls
     )
-    if ($Urls.Count -eq 0 -or $Urls -eq $null) {
+    if ($Urls.Count -eq 0 -or $null -eq $Urls) {
         Write-Host -ForegroundColor Red "Test-BestWebConnection input urls empty"
         return $null
     }
-    [System.String]$besturl = $null;
     [System.Double]$pretime = [System.Double]::MaxValue
     [int]$index = 0
     for ($i = 0; $i -lt $Urls.Count; $i++) {
