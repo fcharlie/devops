@@ -7,11 +7,11 @@ Import-Module -Name "$Devroot/modules/Utils"
 
 [int]$success = 0
 [int]$total = 0
-Get-ChildItem -Path "$Devroot/locks/*.lock.json" |ForEach-Object {
-    $lkv = Get-Content $_.FullName |ConvertFrom-Json
+Get-ChildItem -Path "$Devroot/locks/*.lock.json" | ForEach-Object {
+    $lkv = Get-Content $_.FullName | ConvertFrom-Json
     $version = $lkv.version
     $name = $_.BaseName.Split(".lock")[0]
-    $njson = Get-Content "$Devroot/ports/$Name/config.json" -ErrorAction SilentlyContinue|ConvertFrom-Json -ErrorAction SilentlyContinue
+    $njson = Get-Content "$Devroot/ports/$Name/config.json" -ErrorAction SilentlyContinue | ConvertFrom-Json -ErrorAction SilentlyContinue
     if ($njson -eq $null -or $njson.version -eq $null) {
         Write-Host "Invalid port: $Name."
         return
