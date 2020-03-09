@@ -2,5 +2,5 @@
     "description": "CMake is an open-source, cross-platform family of tools designed to build, test and package software",
     "sources": "https://github.com/Kitware/CMake/releases/download",
     "prefix": "/opt/cmake",
-    "version": "3.16.2"
+    "version": "3.16.5"
 }
