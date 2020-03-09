@@ -1,9 +1,7 @@
 #!/usr/bin/env pwsh
 
 $Devroot = Split-Path $PSScriptRoot
-Import-Module -Name "$Devroot/modules/Download"
-Import-Module -Name "$Devroot/modules/Process"
-Import-Module -Name "$Devroot/modules/Utils"
+Import-Module -Name "$Devroot/modules/Base"
 
 [int]$success = 0
 [int]$total = 0

@@ -2,9 +2,7 @@
 # nodejs url: $url/v$version/node-v$version-linux-x64.tar.xz
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Force use TLS 1.2
 $Toolsdir = Split-Path -Path (Split-Path $PSScriptRoot)
-Import-Module -Name "$Toolsdir/modules/Download"
-Import-Module -Name "$Toolsdir/modules/Process"
-Import-Module -Name "$Toolsdir/modules/Utils"
+Import-Module -Name "$Toolsdir/modules/Base"
 
 $toolslockfile = $Toolsdir + "/locks/nodejs.lock.json"
 $configfile = $PSScriptRoot + "/config.json"

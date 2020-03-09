@@ -2,9 +2,7 @@
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Force use TLS 1.2
 $Toolsdir = Split-Path -Path (Split-Path $PSScriptRoot)
-Import-Module -Name "$Toolsdir/modules/Download"
-Import-Module -Name "$Toolsdir/modules/Process"
-Import-Module -Name "$Toolsdir/modules/Utils"
+Import-Module -Name "$Toolsdir/modules/Base"
 
 $toolslockfile = $Toolsdir + "/locks/cmake.lock.json"
 $toolslocked = Get-Content $toolslockfile -ErrorAction SilentlyContinue | ConvertFrom-Json
@@ -21,7 +19,7 @@ $version = $mconfig.version
 $filename = "cmake-$version-Linux-x86_64"
 $cmakeurl = "$($mconfig.sources)/v$version/$filename.tar.gz"
 
-if ((DownloadFile -Url $cmakeurl -Destination "/tmp/$filename.tar.gz") -eq $false) {
+if ((WinGet -Url $cmakeurl -Destination "/tmp/$filename.tar.gz") -eq $false) {
     Write-Host -ForegroundColor Red "download $cmakeurl failed"
     exit 1
 }
