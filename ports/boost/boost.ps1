@@ -22,7 +22,7 @@ $linked = $mconfig.linked
 $filename = "boost_$($va[0])_$($va[1])_$($va[2])"
 $boosturl = "$($mconfig.sources)/$version/source/$filename.tar.bz2"
 
-if ((DownloadFile -Url $boosturl -Destination "/tmp/$filename.tar.bz2") -eq $false) {
+if ((WinGet -Url $boosturl -Destination "/tmp/$filename.tar.bz2") -eq $false) {
     Write-Host -ForegroundColor Red "download git $boosturl failed"
     exit 1
 }

@@ -23,7 +23,7 @@ $prefix = $mconfig.prefix
 $gofilename = "go${version}.linux-amd64";
 $gourl = "$besturl/$gofilename.tar.gz"
 
-if ((DownloadFile -Url $gourl -Destination "/tmp/$gofilename.tar.gz") -eq $false) {
+if ((WinGet -Url $gourl -Destination "/tmp/$gofilename.tar.gz") -eq $false) {
     Write-Host -ForegroundColor Red "download $gourl failed"
     exit 1
 }

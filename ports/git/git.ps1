@@ -19,7 +19,7 @@ $version = $mconfig.version
 $prefix = $mconfig.prefix
 $giturl = "$($mconfig.sources)/v$version.tar.gz"
 
-if ((DownloadFile -Url $giturl -Destination "/tmp/git-$version.tar.gz") -eq $false) {
+if ((WinGet -Url $giturl -Destination "/tmp/git-$version.tar.gz") -eq $false) {
     Write-Host -ForegroundColor Red "download git $giturl failed"
     exit 1
 }
