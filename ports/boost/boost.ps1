@@ -27,11 +27,11 @@ if ((WinGet -Url $boosturl -Destination "/tmp/$filename.tar.bz2") -eq $false) {
     exit 1
 }
 $destdir = "/tmp/$filename"
-if ((ProcessExec -FilePath "tar" -Argv "-xvf  $filename.tar.bz2" -Dir "/tmp") -ne 0) {
+if ((ProcessExec -FilePath "tar" -Argv "-xvf  $filename.tar.bz2" -WD "/tmp") -ne 0) {
     Write-Host -ForegroundColor Red "untar /tmp/$filename.tar.bz2 failed"
     exit 1
 }
-if ((ProcessExec -FilePath "$destdir/bootstrap.sh" -Dir $destdir) -ne 0) {
+if ((ProcessExec -FilePath "$destdir/bootstrap.sh" -WD $destdir) -ne 0) {
     Write-Host -ForegroundColor Red "bootstrap b2 failed"
     exit 1
 }
@@ -40,7 +40,7 @@ if ($linked -eq "static") {
     $b2cmdline += " cxxflags=`"-fPIC`" link=static"
 }
 $b2cmdline += " install"
-if ((ProcessExec -FilePath "$destdir/b2" -Argv $b2cmdline -Dir $destdir) -ne 0) {
+if ((ProcessExec -FilePath "$destdir/b2" -Argv $b2cmdline -WD $destdir) -ne 0) {
     Write-Host -ForegroundColor Red "build boost failed"
     exit 1
 }

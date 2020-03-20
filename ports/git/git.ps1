@@ -24,19 +24,19 @@ if ((WinGet -Url $giturl -Destination "/tmp/git-$version.tar.gz") -eq $false) {
     exit 1
 }
 $gitsrcdir = "/tmp/git-$version"
-if ((ProcessExec -FilePath "tar" -Argv "-xvf  git-$version.tar.gz" -Dir "/tmp") -ne 0) {
+if ((ProcessExec -FilePath "tar" -Argv "-xvf  git-$version.tar.gz" -WD "/tmp") -ne 0) {
     Write-Host -ForegroundColor Red "untar /tmp/git-$version.tar.gz failed"
     exit 1
 }
-if ((ProcessExec -FilePath "make" -Argv "configure" -Dir $gitsrcdir) -ne 0) {
+if ((ProcessExec -FilePath "make" -Argv "configure" -WD $gitsrcdir) -ne 0) {
     Write-Host -ForegroundColor Red "make configure failed"
     exit 1
 }
-if ((ProcessExec -FilePath "/tmp/git-$version/configure" -Argv "--prefix=$($mconfig.prefix)" -Dir $gitsrcdir) -ne 0) {
+if ((ProcessExec -FilePath "/tmp/git-$version/configure" -Argv "--prefix=$($mconfig.prefix)" -WD $gitsrcdir) -ne 0) {
     Write-Host -ForegroundColor Red "make configure failed"
     exit 1
 }
-if ((ProcessExec -FilePath "make"  -Dir $gitsrcdir) -ne 0) {
+if ((ProcessExec -FilePath "make"  -WD $gitsrcdir) -ne 0) {
     Write-Host -ForegroundColor Red "make failed"
     exit 1
 }
