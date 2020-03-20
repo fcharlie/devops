@@ -5,7 +5,7 @@
 Function ProcessExec {
     param(
         [string]$FilePath,
-        [string]$Arguments,
+        [string]$Argv,
         [string]$WD
     )
     $ProcessInfo = New-Object System.Diagnostics.ProcessStartInfo
@@ -16,9 +16,9 @@ Function ProcessExec {
     else {
         $ProcessInfo.WorkingDirectory = $WD
     }
-    Write-Host "$FilePath $Arguments [$($ProcessInfo.WorkingDirectory)]"
+    Write-Host "$FilePath $Argv [$($ProcessInfo.WorkingDirectory)]"
     #0x00000000 WindowStyle
-    $ProcessInfo.Arguments = $Arguments
+    $ProcessInfo.Arguments = $Argv
     $ProcessInfo.UseShellExecute = $false ## use createprocess not shellexecute
     $Process = New-Object System.Diagnostics.Process
     $Process.StartInfo = $ProcessInfo

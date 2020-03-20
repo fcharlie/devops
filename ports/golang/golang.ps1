@@ -28,7 +28,7 @@ if ((WinGet -Url $gourl -Destination "/tmp/$gofilename.tar.gz") -eq $false) {
     exit 1
 }
 
-if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $gofilename.tar.gz" -Dir "/tmp") -ne 0) {
+if ((ProcessExec -FilePath "tar" -Argv "-xvf  $gofilename.tar.gz" -Dir "/tmp") -ne 0) {
     Write-Host -ForegroundColor Red "untar /tmp/$gofilename.tar.gz failed"
     exit 1
 }

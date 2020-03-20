@@ -29,7 +29,7 @@ if ((WinGet -Url $nodejsurl -Destination "/tmp/$nodejsfile.tar.gz") -eq $false) 
     exit 1
 }
 
-if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $nodejsfile.tar.gz" -Dir "/tmp") -ne 0) {
+if ((ProcessExec -FilePath "tar" -Argv "-xvf  $nodejsfile.tar.gz" -Dir "/tmp") -ne 0) {
     Write-Host -ForegroundColor Red "untar /tmp/$nodejsfile.tar.gz failed"
     exit 1
 }

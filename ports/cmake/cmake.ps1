@@ -26,7 +26,7 @@ if ((WinGet -Url $cmakeurl -Destination "/tmp/$filename.tar.gz") -eq $false) {
 
 $prefix = $mconfig.prefix
 $destdir = "/tmp/$filename"
-if ((ProcessExec -FilePath "tar" -Arguments "-xvf  $filename.tar.gz" -Dir "/tmp") -ne 0) {
+if ((ProcessExec -FilePath "tar" -Argv "-xvf  $filename.tar.gz" -Dir "/tmp") -ne 0) {
     Write-Host -ForegroundColor Red "untar /tmp/$filename.tar.gz failed"
     exit 1
 }
