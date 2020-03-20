@@ -38,7 +38,7 @@ Function WinGet {
     $wgetSet = Get-Command -CommandType Application wget -ErrorAction SilentlyContinue
     if ($null -ne $wgetSet) {
         $wgetExe = $wgetSet[0].Source
-        $wgetArgv = "`"--user-agent=$UA`" `"$Url`" -O `"$Destination`""
+        $wgetArgv = "`"--user-agent=Wget/5.0 (MSVC devi)`" `"$Url`" -O `"$Destination`""
         Write-Host "devdownload (wget-devi): $URL"
         $ex = ProcessExec -FilePath $wgetExe -Argv $wgetArgv -WD $PWD
         if ($ex -ne 0) {
@@ -54,7 +54,7 @@ Function WinGet {
             $TlsArg = ""
         }
         $curlExe = $curlSet[0].Source
-        $curlargv = "-A `"$deviUA`" --progress-bar -fS --connect-timeout 15 --retry 3 -o `"$Destination`" -L $TlsArg $URL"
+        $curlargv = "-A `"Wget/5.0 (MSVC devi)`" --progress-bar -fS --connect-timeout 15 --retry 3 -o `"$Destination`" -L $TlsArg $URL"
         Write-Host "devdownload (curl-devi): $URL"
         $ex = ProcessExec -FilePath $curlExe -Argv $curlargv -WD $PWD
         if ($ex -ne 0) {
@@ -67,7 +67,7 @@ Function WinGet {
     #$xuri = [uri]$Uri
     try {
         Remove-Item -Force $Destination -ErrorAction SilentlyContinue
-        Invoke-WebRequest -Uri $URL -OutFile $Destination -UserAgent $deviUA -UseBasicParsing
+        Invoke-WebRequest -Uri $URL -OutFile $Destination -UserAgent "Wget/5.0 (MSVC devi)" -UseBasicParsing
     }
     catch {
         Write-Host -ForegroundColor Red "download failed: $_"
