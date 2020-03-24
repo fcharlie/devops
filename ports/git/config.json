@@ -1,6 +1,6 @@
 {
     "description": "Git is a modern distributed version control system focused on speed",
-    "sources": "https://github.com/git/git/archive",
+    "sources": "https://mirrors.kernel.org/pub/software/scm/git/",
     "prefix": "/usr/local",
     "version": "2.26.0"
 }

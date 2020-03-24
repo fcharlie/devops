@@ -17,15 +17,17 @@ if ($toolslocked.version -eq $mconfig.version) {
 
 $version = $mconfig.version
 $prefix = $mconfig.prefix
-$giturl = "$($mconfig.sources)/v$version.tar.gz"
+#git-2.26.0.tar.xz
+$gitfile="git-$version.tar.xz"
+$giturl = "$($mconfig.sources)/$gitfile"
 
-if ((WinGet -Url $giturl -Destination "/tmp/git-$version.tar.gz") -eq $false) {
+if ((WinGet -Url $giturl -Destination "/tmp/$gitfile") -eq $false) {
     Write-Host -ForegroundColor Red "download git $giturl failed"
     exit 1
 }
 $gitsrcdir = "/tmp/git-$version"
-if ((ProcessExec -FilePath "tar" -Argv "-xvf  git-$version.tar.gz" -WD "/tmp") -ne 0) {
-    Write-Host -ForegroundColor Red "untar /tmp/git-$version.tar.gz failed"
+if ((ProcessExec -FilePath "tar" -Argv "-xvf  $gitfile" -WD "/tmp") -ne 0) {
+    Write-Host -ForegroundColor Red "untar /tmp/$gitfile failed"
     exit 1
 }
 if ((ProcessExec -FilePath "make" -Argv "configure" -WD $gitsrcdir) -ne 0) {
