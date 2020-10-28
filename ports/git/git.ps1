@@ -18,7 +18,7 @@ if ($toolslocked.version -eq $mconfig.version) {
 $version = $mconfig.version
 $prefix = $mconfig.prefix
 #git-2.26.0.tar.xz
-$gitfile="git-$version.tar.xz"
+$gitfile = "git-$version.tar.xz"
 $giturl = "$($mconfig.sources)/$gitfile"
 
 if ((WinGet -Url $giturl -Destination "/tmp/$gitfile") -eq $false) {
